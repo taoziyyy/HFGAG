@@ -1,0 +1,16 @@
+# 上一个标签还没保存
+#  每个训练的数据需要进行的数据预处理工作
+.   O\n->   O\n.   O\n
+,   O\n->   O\n,   O\n
+:   O\n->   O\n:   O\n
+.   B-BIO-NAME\n->   B-BIO-NAME\n.   O\n
+.   I-BIO-NAME\n->   I-BIO-NAME\n.   O\n
+,   B-BIO-NAME\n->   B-BIO-NAME\n,   O\n
+,   I-BIO-NAME\n->   I-BIO-NAME\n,   O\n
+:   B-BIO-NAME\n->   B-BIO-NAME\n:   O\n
+:   I-BIO-NAME\n->   I-BIO-NAME\n:   O\n
+
+B-BIO-NAME->B-FOLLICLE-NAME
+I-BIO-NAME->I-FOLLICLE-NAME
+
+# 有些无法批处理的格式需要看文档来更改

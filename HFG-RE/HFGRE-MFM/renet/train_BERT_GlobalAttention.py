@@ -1,0 +1,609 @@
+import logging
+
+import numpy as np
+import time
+import datetime
+import random
+import sys
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+from transformers import AutoTokenizer, AutoConfig, AutoModelForSequenceClassification, AdamW, \
+    get_linear_schedule_with_warmup, BertModel
+
+from raw import load_documents
+from utils.sequence_utils import *
+import argparse
+import pandas as pd
+import torch
+import torch.nn as nn
+from torch.utils.data import TensorDataset, random_split
+from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
+from sklearn.model_selection import KFold
+# from transformers import AutoModelForSequenceClassification
+# from transformers import get_linear_schedule_with_warmup
+# from transformers import AutoConfig
+# from transformers import AdamW
+from sklearn.metrics import f1_score
+
+class GlobalAttentionClassifier(nn.Module):
+    def __init__(self, num_classes):
+        super(GlobalAttentionClassifier, self).__init__()
+        self.bert = BertModel.from_pretrained('microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext')
+        self.attention = nn.Linear(768, 1)  # 全局注意力层
+        self.dropout = nn.Dropout(0.1)
+        self.classifier = nn.Linear(768, num_classes)
+
+    def forward(self, input_ids, attention_mask):
+        outputs = self.bert(input_ids=input_ids, attention_mask=attention_mask)
+        hidden_states = outputs.last_hidden_state  # BERT模型输出的所有隐层状态
+        attention_weights = self.attention(hidden_states).squeeze(dim=-1)  # 计算全局注意力权重
+        attention_weights = torch.softmax(attention_weights, dim=1)  # 注意力权重归一化
+        pooled_output = torch.matmul(attention_weights.unsqueeze(dim=1), hidden_states).squeeze(dim=1)  # 使用注意力权重加权汇聚特征
+        pooled_output = self.dropout(pooled_output)
+        logits = self.classifier(pooled_output)
+        return logits
+
+class Config(object):
+  """Holds Model hyperparams and data information.
+
+  The config class is used to store various hyperparameters and dataset
+  information parameters. Model objects are passed a Config() object at
+  instantiation.
+  """
+  window_sizes = [2, 3, 4, 5]
+  filter_size = 25
+  word_embed_size = 200
+  num_word = 82949
+  feature_embed_size = 4
+  total_feature_size = word_embed_size + feature_embed_size
+  sentence_size = 52
+  token_size = 175
+  batch_size = 128
+  label_size = 1
+  hidden_size = 100
+  max_epochs = 50
+  early_stopping = 2
+  dropout = 0.1
+  lr = 0.001
+  l2 = 0.0001
+
+
+def split_data(word_seq, gdas, y, train_val_split = 0.7):
+
+    train_size = int(len(y) * train_val_split)
+
+    train_word_seq = word_seq[:train_size]
+    train_gdas = gdas[:train_size]
+    X_train = train_word_seq, train_gdas
+    y_train = y[:train_size]
+
+    val_word_seq = word_seq[train_size:]
+    val_gdas = gdas[train_size:]
+    X_val = val_word_seq, val_gdas
+    y_val = y[train_size:]
+
+    return X_train, y_train, X_val, y_val
+
+def read_pos_labels(label_path):
+    pos_labels = pd.read_csv(label_path)
+    pos_labels.pmid = pos_labels.pmid.astype(str)
+    pos_labels.geneId = pos_labels.geneId.astype(str)
+    return pos_labels
+
+def get_numpy_labels(gdas, pos_labels):
+    label_df = pos_labels.drop_duplicates()
+    gdas = pd.merge(gdas, label_df, on=['pmid', "geneId", "follicleId"], how="left")
+    s = pd.Series(gdas.label)
+    s.fillna(0, inplace=True)
+    y = s.values
+    return y, gdas
+
+def write_2list_to_file(lst, output_path):
+    with open(output_path, 'w') as f:
+        for sublist in lst:
+            for subsublist in sublist:
+                f.write(' '.join(subsublist) + ' ')
+            f.write('\n')
+def write_1list_to_file(lst, output_path):
+    with open(output_path, 'w') as f:
+        for sublist in lst:
+            f.write(' '.join(sublist) + '\n')
+def read_file_to_list(file_path):
+    result = []
+    with open(file_path, 'r') as f:
+        for line in f:
+            # Remove any leading/trailing white space and new lines
+            line = line.strip()
+            # Append the cleaned line to the result1 list
+            result.append(line)
+    return result
+def Run(args):
+    """Test NER Model implementation.
+
+    When debugging, set max_epochs in the Config object to 1,
+    so you can rapidly iterate.
+    """
+    data_set = 1
+    training_f1_stats = []
+    validation_f1_stats = []
+    training_accuracy_stats = []
+    validation_accuracy_stats = []
+    training_time_stats = []
+    validation_time_stats = []
+    # "bert-base-cased"
+    # "distilbert-base-uncased"
+    # "dmis-lab/biobert-v1.1"
+
+    # 初始化日志记录器
+    logger = logging.getLogger(__name__)
+    filename = f'../result/log/BERT_GlobalAttention-{str(datetime.date.today())}.log'
+    logger.setLevel(logging.INFO)
+    logging.basicConfig(filename=filename, level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
+    print("Loading data...")
+    logging.info("Loading data...")
+        
+    text_path = args.ab_fn
+    sentence_path = args.stc_fn
+    ner_path = args.ner_fn
+    label_path = args.label_fn
+    out_fn = args.output_dir
+
+    gdas, x_word_seq, x_feature = load_documents(text_path, sentence_path, ner_path)
+    write_2list_to_file(x_word_seq, "../test/seq.txt")
+    new_seq = read_file_to_list('../test/seq.txt')
+    new_sequences = Generate_sequences_data(new_seq, gdas)
+    pos_labels = read_pos_labels(label_path)
+    y, total_y = get_numpy_labels(gdas, pos_labels)
+    final_sequences = [' '.join([str(item) for item in row]) for row in new_sequences]
+    dataset = pd.DataFrame({'Data': final_sequences, 'Label': y})
+    texts = list(dataset.Data)
+    label = np.array(dataset.Label.astype('int'))
+    number_label = dataset.Label.astype('category').cat.categories
+
+    training_sizes = [200, 500, 1000, 1500, 2000, 2535]
+    Xs = []
+    Ys = []
+    for s in training_sizes:
+        Xs.append(texts[0:s])
+        Ys.append(label[0:s])
+
+    # output_path = args.output_dir
+    # X_train, y_train, X_val, y_val = split_data(x_word_seq, gdas, y, 1)
+
+    print("Finished loading data.")
+    logging.info("Finished loading data.")
+    print("Begin training...")
+    logging.info("Begin training...")
+    # config = Config()
+
+    # 遍历不同尺寸的6个数据集
+    for xx, yy in zip(Xs, Ys):
+        kf = KFold(n_splits=3)
+        batch_size = 3
+        train_dataset_index = []
+        test_dataset_index = []
+        for train_index, test_index in kf.split(xx):
+            train_dataset_index.append(train_index)
+            test_dataset_index.append(test_index)
+
+        # Tokenize Data
+        # model_name = "bert-base-cased"
+        # model_name = "dmis-lab/biobert-v1.1"
+        # model_name = "distilbert-base-uncased"
+        model_name = "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext"
+        MAX_INPUT_LENGTH = 512
+        tokenizer = AutoTokenizer.from_pretrained(model_name, do_lower_case=True)
+        inputs = tokenizer(xx, padding=True, max_length=MAX_INPUT_LENGTH, return_tensors="pt")
+        inputs["input_ids"] = inputs["input_ids"][:, :MAX_INPUT_LENGTH]  # Truncate input_ids if necessary
+        inputs["attention_mask"] = inputs["attention_mask"][:, :MAX_INPUT_LENGTH]  # Truncate attention_mask if necessary
+        inputs["token_type_ids"] = inputs["token_type_ids"][:, :MAX_INPUT_LENGTH]
+        labels = torch.tensor(yy, dtype=torch.long)
+
+        # Train 划分每个数据集中的训练集和验证集
+        train_set1 = TensorDataset(torch.index_select(inputs.input_ids, 0, torch.tensor(train_dataset_index[0])),
+                                   torch.index_select(inputs.attention_mask, 0, torch.tensor(train_dataset_index[0])),
+                                   labels[train_dataset_index[0]])
+
+        train_set2 = TensorDataset(torch.index_select(inputs.input_ids, 0, torch.tensor(train_dataset_index[1])),
+                                   torch.index_select(inputs.attention_mask, 0, torch.tensor(train_dataset_index[1])),
+                                   labels[train_dataset_index[1]])
+
+        train_set3 = TensorDataset(torch.index_select(inputs.input_ids, 0, torch.tensor(train_dataset_index[2])),
+                                   torch.index_select(inputs.attention_mask, 0, torch.tensor(train_dataset_index[2])),
+                                   labels[train_dataset_index[2]])
+
+        # test
+        test_set1 = TensorDataset(torch.index_select(inputs.input_ids, 0, torch.tensor(test_dataset_index[0])),
+                                  torch.index_select(inputs.attention_mask, 0, torch.tensor(test_dataset_index[0])),
+                                  labels[test_dataset_index[0]])
+
+        test_set2 = TensorDataset(torch.index_select(inputs.input_ids, 0, torch.tensor(test_dataset_index[1])),
+                                  torch.index_select(inputs.attention_mask, 0, torch.tensor(test_dataset_index[1])),
+                                  labels[test_dataset_index[1]])
+
+        test_set3 = TensorDataset(torch.index_select(inputs.input_ids, 0, torch.tensor(test_dataset_index[2])),
+                                  torch.index_select(inputs.attention_mask, 0, torch.tensor(test_dataset_index[2])),
+                                  labels[test_dataset_index[2]])
+
+        # train DataLoader
+        train_loader1 = DataLoader(
+            train_set1,
+            sampler=RandomSampler(train_set1),
+            batch_size=batch_size
+        )
+
+        train_loader2 = DataLoader(
+            train_set2,
+            sampler=RandomSampler(train_set2),
+            batch_size=batch_size
+        )
+
+        train_loader3 = DataLoader(
+            train_set3,
+            sampler=RandomSampler(train_set3),
+            batch_size=batch_size
+        )
+
+        # test DataLoader
+        test_loader1 = DataLoader(
+            test_set1,
+            sampler=RandomSampler(test_set1),
+            batch_size=batch_size
+        )
+
+        test_loader2 = DataLoader(
+            test_set2,
+            sampler=RandomSampler(test_set2),
+            batch_size=batch_size
+        )
+
+        test_loader3 = DataLoader(
+            test_set3,
+            sampler=RandomSampler(test_set3),
+            batch_size=batch_size
+        )
+
+        train_set = [train_loader1, train_loader2, train_loader3]
+        test_set = [test_loader1, test_loader2, test_loader3]
+
+        iter = 0  # counter
+
+        total_t0 = time.time()
+        training_row_f1 = []
+        validation_row_f1 = []
+        training_row_accuracy = []
+        validation_row_accuracy = []
+        training_row_time = []
+        validation_row_time = []
+
+        # 分别将一个数据集的三对训练、验证集进行训练
+        for train, test in zip(train_set, test_set):
+            iter += 1
+            # Download the pre-trained Model
+            config = AutoConfig.from_pretrained(model_name)
+            config.num_labels = 2
+            config.output_attentions = True
+            config.return_dict = False
+            config.finetuning_task = "SST-2"
+
+            # Number of training epochs. The BERT authors recommend between 2 and 4.
+            epochs = 20
+            total_steps = len(test) * epochs
+
+            def flat_accuracy(preds, labels):
+                pred_flat = np.argmax(preds, axis=1).flatten()
+                labels_flat = labels.flatten()
+                return np.sum(pred_flat == labels_flat) / len(labels_flat)
+
+            def flat_f1_score(preds, labels):
+                pred_flat = np.argmax(preds, axis=1).flatten()
+                labels_flat = labels.flatten()
+                return f1_score(labels_flat, pred_flat, average='weighted')
+
+            def format_time(elapsed):
+                '''
+                Takes a time in seconds and returns a string hh:mm:ss
+                '''
+                # Round to the nearest second.
+                elapsed_rounded = int(round((elapsed)))
+
+                # Format as hh:mm:ss
+                return str(datetime.timedelta(seconds=elapsed_rounded))
+
+            seed_val = 42
+            random.seed(seed_val)
+            np.random.seed(seed_val)
+            torch.manual_seed(seed_val)
+            torch.cuda.manual_seed_all(seed_val)
+
+            print("Loading Model...")
+            logging.info("Loading Model...")
+            model = GlobalAttentionClassifier(num_classes=config.num_labels)
+            # Tell pytorch to run this Model on the GPU.
+            model.cuda()
+            torch.cuda.empty_cache()
+
+            optimizer = AdamW(model.parameters(),
+                              lr=2e-5,  # args.learning_rate - default is 5e-5, our notebook had 2e-5
+                              eps=1e-8  # args.adam_epsilon  - default is 1e-8.
+                              )
+
+            # Create the learning rate scheduler.
+            scheduler = get_linear_schedule_with_warmup(optimizer,
+                                                        num_warmup_steps=0,  # Default value in run_glue.py
+                                                        num_training_steps=total_steps)
+
+            # If there's a GPU available...
+            if torch.cuda.is_available():
+                # Tell PyTorch to use the GPU.
+                device = torch.device("cuda")
+                print('There are %d GPU(s) available.' % torch.cuda.device_count())
+                print('We will use the GPU:', torch.cuda.get_device_name(0))
+
+            # If not...
+            else:
+                print('No GPU available, using the CPU instead.')
+                device = torch.device("cpu")
+
+            epoch_training_row_f1 = []
+            epoch_validation_row_f1 = []
+            epoch_training_row_accuracy = []
+            epoch_validation_row_accuracy = []
+            epoch_training_row_time = []
+            epoch_validation_row_time = []
+
+
+            # For each epoch...
+            for epoch_i in range(0, epochs):
+
+                print("")
+                logging.info('')
+                print('======== Epoch {:} / {:} ========'.format(epoch_i + 1, epochs))
+                logging.info('======== Epoch {:} / {:} ========'.format(epoch_i + 1, epochs))
+                print('Training...')
+                logging.info('Training...')
+
+                # Measure training time
+                t0 = time.time()
+
+                # Reset the total loss for this epoch.
+                total_train_loss = 0
+                total_train_accuracy = 0
+                total_train_f1 = 0
+                model.train()
+
+                # For each batch of training data...
+                for step, batch in enumerate(train):
+
+                    # Progress update every 40 batches.
+                    if step % 40 == 0 and not step == 0:
+                        # Calculate elapsed time in minutes.
+                        elapsed = format_time(time.time() - t0)
+
+                        # Report progress.
+                        print('  Batch {:>5,}  of  {:>5,}.    Elapsed: {:}.'.format(step, len(train), elapsed))
+                        logging.info('  Batch {:>5,}  of  {:>5,}.    Elapsed: {:}.'.format(step, len(train), elapsed))
+                    # Unpack elements in DataLoader and copy each tensors to the GPU
+                    inputs = {'input_ids': batch[0].to(device),
+                              'attention_mask': batch[1].to(device)}
+                    labels = batch[2].to(device)
+
+                    # print('b_input_ids:', b_input_ids.shape)
+                    # print('b_input_mask:', b_input_mask.shape)
+                    # print('b_labels:', b_labels.shape)
+                    # clear any previously calculated gradients
+
+
+                    outputs = model(**inputs)
+                    loss = nn.CrossEntropyLoss()(outputs, labels)
+                    predictions = outputs.detach().cpu().numpy()
+                    labels = batch[2].cpu().numpy()
+
+                    total_train_loss += loss.item()
+                    model.zero_grad()
+                    # Perform a backward pass to calculate the gradients.
+                    loss.backward()
+
+                    # Clip the norm of the gradients to 1.0.
+                    # This is to help prevent the "exploding gradients" problem.
+                    torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+
+                    # Update parameters and take a step using the computed gradient.
+                    optimizer.step()
+
+                    # Update the learning rate.
+                    scheduler.step()
+                    #
+                    # # Move logits and labels to CPU
+                    # logits = logits.detach().cpu().numpy()
+                    # label_ids = b_labels.to('cpu').numpy()
+
+                    # Calculate the accuracy for this batch of train sentences, and
+                    # accumulate it over all batches.
+                    total_train_accuracy += flat_accuracy(predictions, labels)
+                    total_train_f1 += flat_f1_score(predictions, labels)
+
+                # Report the final accuracy for this training run.
+                avg_train_accuracy = total_train_accuracy / len(train)
+                # Report the final f1_score for this training run.
+                avg_train_f1 = total_train_f1 / len(train)
+                # Calculate the average loss over all of the batches.
+                avg_train_loss = total_train_loss / len(train)
+                # Measure how long this epoch took.
+                training_time = format_time(time.time() - t0)
+
+                # count
+                print(" Dataset: {0:.2f}  Cross Validation Round(train,test): {1:.2f}".format(data_set, iter))
+                print("  Average training loss: {0:.2f}".format(avg_train_loss))
+                print("  Training F1-Score: {0:.2f}".format(avg_train_f1))
+                print("  Training Accuracy: {0:.2f}".format(avg_train_accuracy))
+                print("  Training epoch took: {:}".format(training_time))
+                logging.info(" Dataset: {0:.2f}  Cross Validation Round(train,test): {1:.2f}".format(data_set, iter))
+                logging.info("  Average training loss: {0:.2f}".format(avg_train_loss))
+                logging.info("  Training F1-Score: {0:.2f}".format(avg_train_f1))
+                logging.info("  Training Accuracy: {0:.2f}".format(avg_train_accuracy))
+                logging.info("  Training epoch took: {:}".format(training_time))
+
+                epoch_training_row_f1.append(avg_train_f1)
+                epoch_training_row_accuracy.append(avg_train_accuracy)
+                epoch_training_row_time.append(training_time)
+
+                ### Validation
+                print("")
+                logging.info("")
+                print("Running Validation...")
+                logging.info("Running Validation...")
+
+                t0 = time.time()
+
+                # Put the Model in evaluation mode
+                model.eval()
+
+                # Tracking variables
+                total_eval_accuracy = 0
+                total_eval_loss = 0
+                total_eval_f1 = 0
+                nb_eval_steps = 0
+
+                # Evaluate data for one epoch
+                for batch in test:
+                    inputs = {'input_ids': batch[0].to(device),
+                              'attention_mask': batch[1].to(device)}
+                    labels = batch[2].to(device)
+
+                    # Tell pytorch not to bother with constructing the compute graph during
+                    with torch.no_grad():
+                        logits = model(**inputs)
+                        loss = nn.CrossEntropyLoss()(logits, labels)
+                        labels = batch[2].cpu().numpy()
+                        predictions = logits.detach().cpu().numpy()
+                        total_eval_loss += loss.item()
+                        # Calculate the accuracy for this batch of test sentences, and
+                        # accumulate it over all batches.
+                        total_eval_accuracy += flat_accuracy(predictions, labels)
+                        total_eval_f1 += flat_f1_score(predictions, labels)
+
+                # Report the final accuracy for this validation run.
+                avg_val_accuracy = total_eval_accuracy / len(test)
+                # Report the final f1_score for this validation run.
+                avg_val_f1 = total_eval_f1 / len(test)
+                # Calculate the average loss over all of the batches.
+                avg_val_loss = total_eval_loss / len(test)
+                # Measure how long the validation run took.
+                validation_time = format_time(time.time() - t0)
+
+                # count
+                epoch_validation_row_f1.append(avg_val_f1)
+                epoch_validation_row_accuracy.append(avg_val_accuracy)
+                epoch_validation_row_time.append(validation_time)
+                print("  Validation Loss: {0:.2f}".format(avg_val_loss))
+                print("  Validation F1-Score: {0:.2f}".format(avg_val_f1))
+                print("  Validation Accuracy: {0:.2f}".format(avg_val_accuracy))
+                print("  Validation took: {:}".format(validation_time))
+                logging.info("  Validation Loss: {0:.2f}".format(avg_val_loss))
+                logging.info("  Validation F1-Score: {0:.2f}".format(avg_val_f1))
+                logging.info("  Validation Accuracy: {0:.2f}".format(avg_val_accuracy))
+                logging.info("  Validation took: {:}".format(validation_time))
+
+            # epoch end
+
+            training_row_f1.append(epoch_training_row_f1[-1])
+            validation_row_f1.append(epoch_validation_row_f1[-1])
+            training_row_accuracy.append(epoch_training_row_accuracy[-1])
+            validation_row_accuracy.append(epoch_validation_row_accuracy[-1])
+            training_row_time.append(epoch_training_row_time[-1])
+            validation_row_time.append(epoch_validation_row_time[-1])
+
+        training_f1_stats.append(training_row_f1)
+        validation_f1_stats.append(validation_row_f1)
+        training_accuracy_stats.append(training_row_accuracy)
+        validation_accuracy_stats.append(validation_row_accuracy)
+        training_time_stats.append(training_row_time)
+        validation_time_stats.append(validation_row_time)
+
+
+
+        data_set += 1
+
+    ### From the cells above, these vectors are filled with measurement values ###
+
+    print(training_f1_stats)
+    print(validation_f1_stats)
+    print(training_accuracy_stats)
+    print(validation_accuracy_stats)
+    print(training_time_stats)
+    print(validation_time_stats)
+    logging.info(training_f1_stats)
+    logging.info(validation_f1_stats)
+    logging.info(training_accuracy_stats)
+    logging.info(validation_accuracy_stats)
+    logging.info(training_time_stats)
+    logging.info(validation_time_stats)
+
+    training_sizes = [200, 500, 1000, 1500, 2000, 2535]
+
+    f_n_train = []
+    for n in training_sizes:
+        for x in range(3):
+            f_n_train.append(n)
+
+    f_train = []
+    for f in training_f1_stats:
+        for ff in f:
+            f_train.append(ff)
+
+    f_test = []
+    for f2 in validation_f1_stats:
+        for ff2 in f2:
+            f_test.append(ff2)
+
+    records = f_train + f_test
+    type1 = ['Train'] * 18
+    type2 = ['Test'] * 18
+    type_ = type1 + type2
+    n = f_n_train + f_n_train
+
+    model = ['BERT'] * (18 * 2)
+    measure = ['F1'] * (18 * 2)
+
+    data_plot_f1 = pd.DataFrame({'n': n, 'Data': records, 'Type': type_, 'Model': model, 'Measure': measure})
+    data_plot_f1.to_excel('../result1/BERT-Attention_F1_20.xlsx', index=False)
+    ## Construct Learning Curve ##
+    plt.rcParams["figure.figsize"] = (10, 6)
+
+    sns.set_theme(style="darkgrid")
+    ax = sns.pointplot(x="n", y="Data", hue="Type", data=data_plot_f1)
+    ax.set(xlabel='Sample Size', ylabel='F1-Score', title="BERT-Attention Learning Curve - F1 Score", )
+    plt.savefig('../result1/BERT-Attention_F1_20_Learning_Curve.pdf')
+    plt.show()
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+            description="RENET: A Deep Learning Approach for Extracting Gene-Disease Associations from Literature")
+
+    parser.add_argument('--ab_fn', type=str, default = None,
+            help="file of abstracts")
+
+    parser.add_argument('--stc_fn', type=str, default=None,
+            help="file of splitted sentences")
+
+    parser.add_argument('--ner_fn', type=str, default=None,
+            help="annotation of disease/gene entities")
+    
+    parser.add_argument('--label_fn', type=str, default=None,
+            help="true G-D-A associations by DisGeNet")
+
+    parser.add_argument('--output_dir', type=str, default = None,
+            help="Output Model")
+    
+    args = parser.parse_args()
+
+    if len(sys.argv[1:]) == 0:
+        parser.print_help()
+        sys.exit(1)
+
+    Run(args)
+        
