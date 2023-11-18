@@ -52,3 +52,9 @@ Article PubMed Id | Gene ID (Entrez) | Follicle Id (MESH) | Predict
 
 The column Predict shows the predict result of HFGAG, 1 means HFGAG believes it is a true associaton, 0 otherwise.
 
+***
+Literature references and code URLs for this part of the code
+Wu Y, Luo R, Leung H C M, et al. Renet: A deep learning approach for extracting gene-disease associations from literature[C]//Research in Computational Molecular Biology: 23rd Annual International Conference, RECOMB 2019, Washington, DC, USA, May 5-8, 2019, Proceedings 23. Springer International Publishing, 2019: 272-284.
+
+https://github.com/alexwuhkucs/gda-extraction
+***
