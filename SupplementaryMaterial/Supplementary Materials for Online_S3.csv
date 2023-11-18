@@ -1,0 +1,625 @@
+,follicle_name,follicle_id
+1,hair,F000001
+2, hair follicle,F000001
+3,anagen hair follicles,F000001
+4,hair follic,F000001
+5,hair follicle,F000001
+6,Hair follicle,F000001
+7,Hair Follicle,F000001
+8,hair follicle ,F000001
+9,hair follicles,F000001
+10,Hair follicles,F000001
+11,Hair Follicles,F000001
+12,hair follicles ,F000001
+13,Hair follicles ,F000001
+14,hair-follicle,F000001
+15,Hair-Follicle,F000001
+16,Hair-follicle,F000001
+17,HF,F000001
+18,PHF,F000001
+19,PHFs,F000001
+20,primary and secondary hair follicles,F000001
+21,primary hair follicle,F000001
+22,primary hair follicles,F000001
+23,secondary follicle,F000001
+24,secondary follicles,F000001
+25,secondary hair follicle,F000001
+26,Secondary Hair Follicle,F000001
+27,secondary hair follicles,F000001
+28,Secondary hair follicles,F000001
+29,SF,F000001
+30,SHF,F000001
+31,SHFs,F000001
+32,The secondary hair follicle,F000001
+33,the secondary hair follicle,F000001
+34,THF,F000001
+35,truncated hair follicles,F000001
+36,VHF,F000001
+37,VHFs,F000001
+38,vibrissae hair follicle ,F000001
+39,telogen hair follicles,F000001
+40,follicles,F000001
+41,HFs,F000001
+42,hair follicle ,F000001
+43,follicle ,F000001
+44,development and growth,F000002
+45,development of hair follicles,F000002
+46,development of HF,F000002
+47,follicle development,F000002
+48,hair follicle (HF) development,F000002
+49,Hair follicle (HF) development,F000002
+50,hair follicle (HF) growth and development,F000002
+51,hair follicle developmen,F000002
+52,hair follicle development,F000002
+53,Hair Follicle Development,F000002
+54,Hair follicle development,F000002
+55,hair follicle development ,F000002
+56,hair follicle development and cycling,F000002
+57,hair follicle developmental,F000002
+58,hair follicle development-related genes,F000002
+59,Hair follicle growth and development,F000002
+60,hair follicle growth and development,F000002
+61,hair development,F000002
+62,HF development,F000002
+63,HF development and cycling,F000002
+64,HF development and regeneration,F000002
+65,hair-follicle development,F000002
+66,the development and growth cycle of hair follicles,F000002
+67,the development and regeneration of hair follicles,F000002
+68,the cycles of hair follicle growth,F000002
+69,the development of hair follicle,F000002
+70,the development of hair follicles,F000002
+71,the development of the hair follicle,F000002
+72,the regular development of hair follicles,F000002
+73,secondary hair follicle development,F000002
+74,secondary follicle development,F000002
+75,hair follicle cycle development,F000002
+76,hair follicular development,F000002
+77,hair follicles developmental,F000002
+78,HFs development,F000002
+79,SF development,F000002
+80,HFDRGs,F000002
+81,follicle growth,F000003
+82,growth of hair follicles,F000003
+83,hair follicle (HF) growth,F000003
+84,Hair Follicle Growth,F000003
+85,hair follicle growth,F000003
+86,Hair follicle growth,
+87,the growth of the hair follicle,F000003
+88,hair-growth,F000003
+89,Hair-Growth,F000003
+90,hair-follicle growth,F000003
+91,HF growth,F000003
+92,HF growth and cycling,F000003
+93,HF growth and development,F000003
+94,HF growth cycle,F000003
+95,the growth and development of SHF,F000003
+96,the growth and development of skin and hair follicles,F000003
+97,the growth cycle of hair follicles,F000003
+98,the growth of cashmere,F000003
+99,the growth of DP cells,F000003
+100,the growth of hair follicle dermal papilla cells,F000003
+101,the growth of hair follicles,F000003
+102,the growth of HFs,F000003
+103,the growth process of hair follicles,F000003
+104,The cyclic growth of hair follicles,F000003
+105,secondary hair follicle growth,F000003
+106,SHG,F000003
+107,hair growth,F000003
+108,Hair growth,F000003
+109,Hair Growth,F000003
+110,hair growth ,F000003
+111,hair growth and development,F000003
+112,hair growth cycle,F000003
+113,hair growth cycles,F000003
+114,hair growth disorders,F000003
+115,hair follicle growth cycles,F000003
+116,hair growth-promoting,F000003
+117,Hair Growth-Promotion,F000003
+118,hair grew,F000003
+119,hair outgrowth,F000003
+120,HF outgrowth ,F000003
+121,HFs' growth,F000003
+122,hair follicle fiber growth,F000003
+123,hair regrew,F000004
+124,hair regrow,F000004
+125,hair regrowth,F000004
+126,HF regrowth,F000004
+127,Hair Formation,F000005
+128,hair formation,F000005
+129,hair generation,F000006
+130,HFG,F000006
+131,HF-generating,F000006
+132,HFGs,F000006
+133,hair loss,F000007
+134,Hair loss,F000007
+135,Female pattern hair loss,F000007
+136,FPHL,F000007
+137,hair follicle loss,F000007
+138,HL,F000007
+139,HAIR FOLLICLE REGENERATION,F000008
+140,hair follicle regenerative,F000008
+141,hair follicle regeneration,F000008
+142,Hair follicle regeneration,F000008
+143,Hair Follicle Regeneration,F000008
+144,follicle regeneration,F000008
+145,follicle regeneration cycle,F000008
+146,hair growth and regeneration,F000008
+147,hair follicle (HF) regeneration,F000008
+148,hair follicle (HF) regenerative,F000008
+149,hair regeneration,F000008
+150,Hair regeneration,F000008
+151,hair regeneration and growth,F000008
+152,hair regeneration cycle,F000008
+153,hair regenerative,F000008
+154,Hair regenerative,F000008
+155,hair-regenerative,F000008
+156,hair-follicle regeneration,F000008
+157,Hair-Follicle Regeneration,F000008
+158,HF regeneration,F000008
+159,HF regeneration ,F000008
+160,HF regenerative,F000008
+161,the regeneration of hair follicles,F000008
+162,regenerate hair follicles,F000008
+163,Regeneration of hair follicles,F000008
+164,regeneration of hair follicles,F000008
+165,Hair follicles regenerate,F000008
+166,hair follicles regeneration,F000008
+167,hair follicular (HF) regeneration,F000008
+168,Hair Follicle Cell Regeneration,F000008
+169,Hair follicle cyclical regeneration,F000008
+170,skin regeneration,F000008
+171,hair follicle proliferation and regeneration,F000008
+172,Hair follicle apoptosis,F000009
+173,HF apoptosis,F000009
+174,hair follicle formation,F000010
+175,Hair Follicle Formation,F000010
+176,Hair Follicle Generation,F000010
+177,hair follicle generation,F000010
+178,HF generation,F000010
+179,hair homeostasis,F000011
+180,hair homeostatic cycle,F000011
+181,hair follicle homeostases,F000011
+182,hair follicle homeostasis,F000011
+183,Hair Follicle Homeostasis,F000011
+184,skin homeostasis,F000011
+185,hair disorders,F000012
+186,Hair disorders,F000012
+187,hair disorder,F000012
+188,hair follicle-associated disorders,F000012
+189,HF disorders,F000012
+190,hair follicle disorders,F000012
+191,Hair cycle,F000013
+192,hair cycle,F000013
+193,Hair Cycle,F000013
+194,hair cycle clock,F000013
+195,HCC,F000013
+196,hair cycle control,F000013
+197,hair cycle growth,F000013
+198,hair cycle homeostasis,F000013
+199,hair cycles,F000013
+200,hair cycling,F000013
+201,Hair cycling,F000013
+202,hair follicle (HF) cycle,F000013
+203,hair follicle (HF) cycling,F000013
+204,hair follicle cycle,F000013
+205,Hair Follicle Cycle,F000013
+206,Hair Follicle Cycles,F000013
+207,hair follicle cycles,F000013
+208,hair follicle cycling,F000013
+209,hair follicle-cycling,F000013
+210,Hair Follicle Cycling,F000013
+211,Hair follicle cycling,F000013
+212,hair follicle cycle.,F000013
+213,cycle of hair follicles,F000013
+214,follicle cycle,F000013
+215,follicle cycling,F000013
+216,follicular cycles,F000013
+217,HF cycle,F000013
+218,HF cycles,F000013
+219,HF cycling,F000013
+220,"HF cycling,",F000013
+221,secondary hair follicle cycling,F000013
+222,SHF cycle,F000013
+223,the cycle of hair follicles,F000013
+224,secondary hair follicle growth cycle,F000013
+225,second hair cycle,F000013
+226,hair follicle growth cycle,F000013
+227,hair follicles (HFs) cycle,F000013
+228,HFs cycle,F000013
+229,hair follicle life-cycle,F000013
+230,the growth and cycling of hair follicles,F000013
+231,HSFC,F000013
+232,hair cycle-associated,F000013
+233,hair follicle cycle regulation,F000014
+234,hair follicle regulation,F000014
+235,hair follicle system,F000015
+236,hair follicle transition,F000016
+237,hair follicle-inducing,F000017
+238,hair follicle-inductive,F000017
+239,hair follicle- inducing,F000017
+240,hair follicle induction,F000017
+241,hair follicle germ,F000018
+242,Hair Follicle Germ,F000018
+243,hair follicle germ reconstitution,F000018
+244,Hair follicle germ reconstruction,F000018
+245,Hair Follicle Germs,F000018
+246,hair follicle germs,F000018
+247,Hair follicle germs,F000018
+248,self-sorted hair follicle germs,F000018
+249,secondary hair germ,F000018
+250,hair germ cells,F000018
+251,secondary hair germ cells,F000018
+252,ssHFG,F000018
+253,ssHFGs,F000018
+254,density of HF,F000019
+255,hair densities,F000019
+256,hair density,F000019
+257,hair follicle density,F000019
+258,Hair follicle density,F000019
+259,the density of HF,F000019
+260,secondary hair follicle density,F000019
+261,secondary follicle density,F000019
+262,primary follicle density,F000019
+263,primary hair follicle density,F000019
+264,primary and secondary hair follicle density,F000019
+265,HF density,F000019
+266,wound-induced hair follicle neogenesis,F000020
+267,Wound-induced hair follicle neogenesis,F000020
+268,WIHN,F000020
+269,hair follicle neogenesis,F000020
+270,Hair Follicle Neogenesis,F000020
+271,Hair follicle Neogenesis,F000020
+272,hair neogenesis,F000020
+273,follicle neogenesis,F000020
+274,hair-follicle neogenesis,F000020
+275,Hair-Follicle Neogenesis,F000020
+276,HF neogenesis,F000020
+277,hair-follicle (HF) neogenesis,F000020
+278,HFN,F000020
+279,hair morphogenesis,F000021
+280,hair follicle morphogenesis,F000021
+281,Hair Follicle Morphogenesis,F000021
+282,Hair follicle morphogenesis,F000021
+283,Hair follicle morphogenesis ,F000021
+284,hair-follicle morphogenesis,F000021
+285,hair follicular morphogenesis,F000021
+286,hair follicle-morphogenesis,F000021
+287,hair follicle (HF) morphogenesis,F000021
+288,follicle morphogenesis,F000021
+289,HF morphogenesis,F000021
+290,HF morphogenetic,F000021
+291,skin morphogenesis,F000021
+292,HF morphology,F000021
+293,hair follicle morphological,F000022
+294,hair follicle morphology,F000022
+295,hair reconstitution,F000023
+296,hair follicle reconstitution,F000023
+297,hair follicle reconstruction,F000023
+298,hair-follicle reconstruction,F000023
+299,hair follicles reconstitution,F000023
+300,HF bulge,F000024
+301,hair follicle bulge cells,F000024
+302,HF formation,F000025
+303,hair follicle repair,F000026
+304,HF repair,F000026
+305,hair cells,F000027
+306,follicle cells,F000027
+307,hair follicle cell,F000027
+308,Hair Follicle Cell,F000027
+309,hair follicle cells,F000027
+310,hair follicle cells.,F000027
+311,Hair follicle cells,F000027
+312,Hair Follicle Cells,F000027
+313,HF cell,F000027
+314,HF cells,F000027
+315,HC,F000027
+316,hair follicle-associated cell,F000027
+317,SHFCs,F000027
+318,hair follicle (HF) progenitors,F000028
+319,HF progenitors,F000028
+320,hair follicle progenitors,F000028
+321,hair follicle progenitor cells,F000028
+322,Hair follicle stem cell,F000029
+323,Hair Follicle Stem Cell,F000029
+324,hair follicle stem cell,F000029
+325,Hair Follicle stem Cell,F000029
+326,hair follicle stem cells,F000029
+327,Hair follicle stem cells,F000029
+328,Hair Follicle Stem Cells,F000029
+329,Hair follicle stem cells ,F000029
+330,air follicle stem cells,F000029
+331,follicular stem cells,F000029
+332,follicle stem cells,F000029
+333,hair stem cell,F000029
+334,hair stem cells,F000029
+335,hair-follicle stem cells,F000029
+336,hair-follicle stem-cell,F000029
+337,Hair-Follicle-Stem-Cell,F000029
+338,HF stem cell,F000029
+339,HF stem cells,F000029
+340,HF stem-cell,F000029
+341,stem cells in the HFs,F000029
+342,primary hair follicle stem cells,F000029
+343,goat hair follicle stem cells,F000029
+344,goat secondary hair follicle stem cells,F000029
+345,gsHFSCs,F000029
+346,hair follicular stem cells,F000029
+347,hair follicles stem cell,F000029
+348,hair follicle stem-cell,F000029
+349,hair follicle SC,F000029
+350,hair follicle SCs,F000029
+351,hair follicle stem/progenitor cell,F000029
+352,Hair follicle stem/progenitor cells,F000029
+353,in the growth of HFSCs,F000029
+354,hair follicle stem cell development,F000029
+355,hair follicle stem cell differentiation,F000029
+356,hair follicle stem cell growth,F000029
+357,secondary hair follicle stem cells,F000029
+358,SHFSCs,F000029
+359,dHFSCs,F000029
+360,HFSC,F000029
+361,HFSc,F000029
+362,HFSC proliferation,F000029
+363,HFSCs,F000029
+364,HFSCs proliferation,F000029
+365,"HFSCs,",F000029
+366,hHFSC,F000029
+367,hHFSCs,F000029
+368,PHFSCs,F000029
+369,hair follicle derived stem cells,F000029
+370,HSCs,F000029
+371,for hair follicle mesenchymal stem cells,F000030
+372,hair follicle mesenchymal stem cell,F000030
+373,Hair Follicle Mesenchymal Stem Cells,F000030
+374,hair follicle mesenchymal stem cells,F000030
+375,Hair follicle mesenchymal stem cells,F000030
+376,hair follicle mesenchyme,F000030
+377,Hair follicle mesenchyme,F000030
+378,Hair follicle-derived mesenchymal stem cells,F000030
+379,hair follicle-derived mesenchymal stem cells,F000030
+380,Hair follicle-derived MSCs,F000030
+381,Mesenchymal Stem Cell,F000030
+382,mesenchymal stem cell,F000030
+383,Mesenchymal stem cells,F000030
+384,mesenchymal stem cells,F000030
+385,MSC,F000030
+386,MSCORS,F000030
+387,Hair-Follicle Mesenchymal Stem Cell,F000030
+388,HF-MSC,F000030
+389,HF-MSCs,F000030
+390,hHFMSCs,F000030
+391,follicle mesenchymal stem cells,F000030
+392,MSCs,F000031
+393,hair follicle mesenchymal functional cells,F000031
+394,HF-MFCs,F000031
+395,hair follicle mesenchymal progenitor cells,F000032
+396,HF-MPCs,F000032
+397,Hair-Follicle-Derived Stem Cells,F000033
+398,Hair-follicle-derived stem cells,F000033
+399,hair follicle-derived cell transplantation,F000033
+400,hair follicle-derived cells,F000033
+401,hair follicle-derived,F000033
+402,hair-derived stem cells,F000033
+403,follicle dermal cells,F000034
+404,hair follicle dermal cells,F000034
+405,Hair follicle dermal cells,F000034
+406,hair follicle dermal papilla,F000034
+407,Hair follicle dermal papilla (DP) cells,F000034
+408,hair follicle papillae,F000034
+409,hair papilla cells,F000034
+410,hair follicle dermal papillae,F000034
+411,hair follicle dermal papilla cells,F000034
+412,Hair Follicle Dermal Papilla Cells,F000034
+413,Hair follicle dermal papilla cells,F000034
+414,Hair Follicle Dermal Papilla cells,F000034
+415,hair follicle Dermal Papilla cells,F000034
+416,follicle dermal papilla cells,F000034
+417,dermal cells,F000034
+418,DCs,F000034
+419,hair dermal papilla,F000034
+420,secondary hair follicle dermal papilla cells,F000034
+421,Hair-Follicle Dermal Papilla Cells,F000034
+422,hair-follicle dermal papilla cells,F000034
+423,dermal papilla,F000034
+424,Dermal papilla,F000034
+425,dermal papilla (DP) cells,F000034
+426,Dermal papilla (DP) cells,F000034
+427,Dermal Papilla (HDP) cell,F000034
+428,dermal papilla cell,F000034
+429,Dermal Papilla Cell,F000034
+430,dermal papilla cells,F000034
+431,Dermal papilla cells,F000034
+432,Dermal Papilla Cells,F000034
+433,Dermal papillae,F000034
+434,dermal papillae,F000034
+435,dermal papillar cells,F000034
+436,dermal papillary cells,F000034
+437,DP,F000034
+438,DP ,F000034
+439,DP cell,F000034
+440,DP cells,F000034
+441,DPC,F000034
+442,DPCs,F000034
+443,Hair Follicle-Derived Papilla Cells,F000034
+444,hair follicle-derived papilla cells,F000034
+445,hair follicle DPCs,F000034
+446,Hair Follicle Papilla Cells,F000034
+447,hDPC,F000034
+448,hDPCs,F000034
+449,HDP cells,F000034
+450,HDP,F000034
+451,HD,F000034
+452,human dermal follicle papilla cells,F000034
+453,Human Dermal Papilla,F000034
+454,human dermal papilla cells,F000034
+455,human DPCs,F000034
+456,Human follicle dermal papilla cells,F000034
+457,SHF-DPCs,F000034
+458,hHFDPC,F000034
+459,hHFDPCs,F000034
+460,HFDPC,F000034
+461,HFDPCs,F000034
+462,HDFPCs,F000034
+463,FDPC,F000034
+464,DP microtissues,F000034
+465,hair follicle dermal sheath,F000035
+466,Hair follicle dermal sheath,F000035
+467,Hair Follicle Dermal Sheath Cells,F000035
+468,hair follicle dermal sheath cells,F000035
+469,hair follicle dermal stem cell,F000035
+470,hair follicle dermal stem cells,F000035
+471,Hair follicle dermal stem cells,F000035
+472,dermal sheath,F000035
+473,dermal sheath cells,F000035
+474,dermal stem cells,F000035
+475,DS,F000035
+476,DS cell,F000035
+477,DS cells,F000035
+478,HF dermal stem cells,F000035
+479,DSC cells,F000035
+480,hfDSC,F000035
+481,hfDSCs,F000035
+482,hair follicle outer root sheath,F000036
+483,Hair Follicle Outer Root Sheath,F000036
+484,Hair follicle outer root sheath,F000036
+485,hair follicle outer root sheath cell,F000036
+486,hair follicle outer root sheath cells,F000036
+487,hair follicle outer-root sheath,F000036
+488,ORS,F000036
+489,ORS cells,F000036
+490,ORSCs,F000036
+491,Out root sheath,F000036
+492,outer root sheath,F000036
+493,outer root sheath (ORS) cells,F000036
+494,outer root sheath cells,F000036
+495,outer root sheaths cells,F000036
+496,HF outer root sheath,F000036
+497,hORSCs,F000036
+498,inner root sheath,F000037
+499,IRS,F000037
+500,hair follicle bulge,F000038
+501,Hair Follicle Bulge,F000038
+502,hair follicle bulge stem cell,F000038
+503,Hair Follicle Bulge Stem Cells,F000038
+504,hair follicle bulge stem cells,F000038
+505,Hair Follicle Bulge Stem Cells ,F000038
+506,bugle stem cells,F000038
+507,bulge stem cells,F000038
+508,HFBSC,F000038
+509,HFBSCs,F000038
+510,hair follicle derived mesenchymal multipotent cells,F000039
+511,HF-MMCs,F000039
+512,Hair follicle epidermal stem cells,F000040
+513,hair follicle epidermal stem cells,F000040
+514,epidermal cells,F000040
+515,epidermal stem cells,F000040
+516,Epidermal Stem Cells,F000040
+517,epithelial hair follicle (HF) stem cells,F000040
+518,epithelial hair follicle stem cell,F000040
+519,epithelial stem cells,F000040
+520,eHFSC,F000040
+521,eHFSCs,F000040
+522,Hair Follicle Epithelial Cell,F000041
+523,hair follicle epithelial cell ,F000041
+524,hair follicle epithelial cells,F000041
+525,follicle epithelial cells,F000041
+526,hair follicle epithelial stem cells,F000041
+527,hair follicle epithelial-mesenchymal interaction,F000041
+528,hair follicle epithelium,F000041
+529,Hair Follicle Epithelium,F000041
+530,hair follicle epithelium cells,F000041
+531,follicle epithelium,F000041
+532,follicle-derived epithelial stem cells,F000041
+533,follicle epithelium,F000041
+534,HF epithelial stem cells,F000041
+535,HF epithelium,F000041
+536,HFeSCs,F000041
+537,Hair-follicle-associated pluripotent,F000042
+538,hair-follicle-associated pluripotent,F000042
+539,Hair-Follicle-Associated Pluripotent,F000042
+540,HAP,F000042
+541,hair follicle-associated pluripotent,F000042
+542,Hair Follicle-Associated Pluripotent,F000042
+543,hair follicle-associated pluripotent (HAP) stem cells,F000042
+544,Hair Follicle-Associated Pluripotent(HAP) Stem Cells,F000042
+545,Hair follicle-associated-pluripotent,F000042
+546,hair follicle-associated-pluripotent,F000042
+547,Hair Follicle-Associated-Pluripotent (HAP) Stem Cells,F000042
+548,hair follicle. HAP stem cells,F000042
+549,Hair-follicle-associated pluripotent (HAP) stem cells,F000042
+550,hair-follicle-associated pluripotent (HAP) stem cells,F000042
+551,Hair-Follicle-Associated Pluripotent (HAP) Stem Cells,F000042
+552,Hair-Follicle-Associated Pluripotent Stem Cells,F000042
+553,HAP stem cell,F000042
+554,HAP stem cells,F000042
+555,HAP stem-cell,F000042
+556,HAP-stem-cell,F000042
+557,Human Hair Follicle Associated-Pluripotent,F000042
+558,Human hair follicle-associated pluripotent,F000042
+559,hair-associated-pluripotent,F000042
+560,Hair-Follicle Associated Pluripotent (HAP) Stem Cells,F000042
+561,hHAP,F000042
+562,hHAP stem cells,F000042
+563,the maturation of hair follicles,F000043
+564,hair follicle maturation,F000043
+565,hair follicles neural crest stem cells,F000044
+566,hfNCSCs,F000044
+567,hair health,F000045
+568,hair follicle degeneration,F000046
+569,hair follicle deletion,F000047
+570,hair follicle differentiation,F000048
+571,hair follicle downgrowth,F000049
+572,hair follicle elongation,F000050
+573,Hair follicle melanocyte stem cells,F000051
+574,hair follicle melanocytes,F000051
+575,hair follicle McSCs,F000051
+576,HF melanogenesis,F000052
+577,HF physiopathology,F000053
+578,HF senescence,F000054
+579,Hair Follicle Senescence,F000054
+580,hair follicle signaling pathways,F000055
+581,hair phenotypes,F000056
+582,hair follicle phenotypes,F000056
+583,HF genes,F000057
+584,hair traits,F000058
+585,HPuHG,F000059
+586,FCT,F000060
+587,FCT ,F000060
+588,enhanced,F000061
+589,cells,F000062
+590,EF,F000063
+591,hair follicle structures,F000064
+592,follicle multiplication,F000065
+593,hair follicle fragility,F000066
+594,hair production.,F000067
+595,hair follicle transformations,F000068
+596,HF renewal,F000069
+597,Hair follicle renewal,F000069
+598,hair restoration,F000070
+599,hair follicle bulb cells,F000071
+600,eNCSCs,F000072
+601,hair follicle remodeling,F000073
+602,dermal sheath cup cells,F000074
+603,tooth papilla cells,F000075
+604,dental papilla cells,F000076
+605,hair follicle regression,F000077
+606,HF colonization,F000078
+607,hair recovery,F000079
+608,hair follicle neural crest cells,F000080
+609,hfNCCs,F000080
+610,hair follicle buds,F000081
+611,Hair Follicle Components,F000082
+612,Hair follicle reformation,F000083
+613,hair follicle microinflammation,F000084
+614,Hair-follicle smooth muscle progenitor cells,F000085
+615,HF-SMPCs,F000085
+616,hair migration,F000086
+617,hair cuticle,F000087
+618,Hair fibers,F000088
+619,HF cellular,F000089
+620,hair follicle mites,F000090
+621,HF metabolism,F000091
+622,hair-shaft,F000092
+623,hHFDCs,F000093
+624,HFSPCs,F000094
