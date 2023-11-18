@@ -24,10 +24,6 @@ pip install pandas
 pip install numpy  
 ```
 
-To check the version of Tensorflow you have installed:  
-
-```shell
-python -c 'import tensorflow as tf; print(tf.__version__)'
 ```
 To do testing using trained models, CPU will suffice. To train a new model, a high-end GPU and the GPU version of Tensorflow is needed. To install the GPU version of tensorflow:
 ```shell
